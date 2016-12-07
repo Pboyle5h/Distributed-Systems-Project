@@ -7,7 +7,13 @@ import java.rmi.NotBoundException;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_ADDPeer;
+
 public class ServiceHandler extends HttpServlet {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String remoteHost = null;
 	private static long jobNumber = 0;
 
@@ -19,8 +25,9 @@ public class ServiceHandler extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.setContentType("text/html");
 		PrintWriter out = resp.getWriter();
+		StringService ss= null;
 		try {
-			StringService ss = (StringService) Naming.lookup("rmi://localhost:1099/distSystems");
+			 ss = (StringService) Naming.lookup("rmi://localhost:1099/test");
 		} catch (NotBoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -46,6 +53,8 @@ public class ServiceHandler extends HttpServlet {
 			taskNumber = new String("T" + jobNumber);
 			jobNumber++;
 			//Add job to in-queue
+			Resultator rs = ss.compare(s, t, algorithm);
+			System.out.println(rs.getResult());
 		}else{
 			//Check out-queue for finished job
 		}
